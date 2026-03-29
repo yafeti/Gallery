@@ -1,1 +1,94 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #222;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  📸 GALLERY
+</header>
+
+<div class="gallery" id="gallery"></div>
+
+<footer>
+  © 2026 Gallery Website
+</footer>
+
+<script>
+  const username = "YOUR_USERNAME";
+  const repo = "YOUR_REPO";
+  const folder = "Photos";
+
+  const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const gallery = document.getElementById("gallery");
+
+      data.forEach(file => {
+        if (file.type === "file") {
+          const img = document.createElement("img");
+          img.src = file.download_url;
+          img.alt = file.name;
+
+          gallery.appendChild(img);
+        }
+      });
+    })
+    .catch(error => {
+      console.error("Error loading images:", error);
+    });
+</script>
+
+</body>
+</html>
