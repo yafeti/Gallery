@@ -17,8 +17,8 @@
       padding: 20px;
       width: 300px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     img {
@@ -47,37 +47,35 @@
 
   <img id="photo" src="https://via.placeholder.com/100">
 
-  <h3 id="name">Loading...</h3>
-  <p id="email">Loading...</p>
+  <h3 id="name"></h3>
+  <p id="email"></p>
 
   <button onclick="logout()">Logout</button>
 </div>
 
 <script>
 
-// Get user from login storage
 const user = JSON.parse(localStorage.getItem("user"));
 
-// If no user → redirect
 if (!user) {
   window.location.href = "login.html";
 }
 
-// 🔧 SAFE FIELD HANDLING (fix missing name/email)
+// ✅ FIX NAME (your real key is username)
 document.getElementById("name").innerText =
-  user.name || user.Name || user["name "] || "No Name";
+  user.username || "No Name";
 
+// ✅ FIX EMAIL (you have email + email address)
 document.getElementById("email").innerText =
-  user.email || user.Email || user["email "] || "No Email";
+  user.email || user["email address"] || "No Email";
 
-// 🔧 FIX IMAGE (Google Drive support)
-let photo = user.photo || user.Photo || "";
+// ✅ FIX IMAGE (Google Drive conversion)
+let photo =
+  user["upload profile photo"] || "";
 
-if (photo.includes("drive.google.com")) {
-  const match = photo.match(/[-\w]{25,}/);
-  if (match) {
-    photo = "https://drive.google.com/uc?export=view&id=" + match[0];
-  }
+if (photo.includes("open?id=")) {
+  const fileId = photo.split("open?id=")[1];
+  photo = "https://drive.google.com/uc?export=view&id=" + fileId;
 }
 
 document.getElementById("photo").src =
