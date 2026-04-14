@@ -45,30 +45,45 @@
 <div class="card">
   <h2>Dashboard</h2>
 
-  <img id="photo" src="" alt="Profile Photo">
+  <img id="photo" src="https://via.placeholder.com/100">
 
-  <h3 id="name"></h3>
-  <p id="email"></p>
+  <h3 id="name">Loading...</h3>
+  <p id="email">Loading...</p>
 
   <button onclick="logout()">Logout</button>
 </div>
 
 <script>
 
-// Get logged-in user from login page
+// Get user from login storage
 const user = JSON.parse(localStorage.getItem("user"));
 
-// If no user → send back to login
+// If no user → redirect
 if (!user) {
   window.location.href = "login.html";
 }
 
-// Display user data
-document.getElementById("name").innerText = user.name || "No Name";
-document.getElementById("email").innerText = user.email || "No Email";
-document.getElementById("photo").src = user.photo || "https://via.placeholder.com/100";
+// 🔧 SAFE FIELD HANDLING (fix missing name/email)
+document.getElementById("name").innerText =
+  user.name || user.Name || user["name "] || "No Name";
 
-// Logout function
+document.getElementById("email").innerText =
+  user.email || user.Email || user["email "] || "No Email";
+
+// 🔧 FIX IMAGE (Google Drive support)
+let photo = user.photo || user.Photo || "";
+
+if (photo.includes("drive.google.com")) {
+  const match = photo.match(/[-\w]{25,}/);
+  if (match) {
+    photo = "https://drive.google.com/uc?export=view&id=" + match[0];
+  }
+}
+
+document.getElementById("photo").src =
+  photo || "https://via.placeholder.com/100";
+
+// Logout
 function logout() {
   localStorage.removeItem("user");
   window.location.href = "login.html";
