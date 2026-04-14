@@ -61,21 +61,22 @@ if (!user) {
   window.location.href = "login.html";
 }
 
-// ✅ FIX NAME (your real key is username)
+// ✅ NAME
 document.getElementById("name").innerText =
   user.username || "No Name";
 
-// ✅ FIX EMAIL (you have email + email address)
+// ✅ EMAIL
 document.getElementById("email").innerText =
   user.email || user["email address"] || "No Email";
 
-// ✅ FIX IMAGE (Google Drive conversion)
-let photo =
-  user["upload profile photo"] || "";
+// ✅ IMAGE FIX (BEST VERSION)
+let photo = user["upload profile photo"] || "";
 
-if (photo.includes("open?id=")) {
-  const fileId = photo.split("open?id=")[1];
-  photo = "https://drive.google.com/uc?export=view&id=" + fileId;
+// Extract Google Drive file ID safely
+const match = photo.match(/[-\w]{25,}/);
+
+if (match) {
+  photo = "https://drive.google.com/thumbnail?id=" + match[0] + "&sz=w400";
 }
 
 document.getElementById("photo").src =
