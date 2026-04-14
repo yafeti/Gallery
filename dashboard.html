@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: black;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Dashboard</h2>
+
+  <img id="photo" src="" alt="Profile Photo">
+
+  <h3 id="name"></h3>
+  <p id="email"></p>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+
+// Get logged-in user from login page
+const user = JSON.parse(localStorage.getItem("user"));
+
+// If no user → send back to login
+if (!user) {
+  window.location.href = "login.html";
+}
+
+// Display user data
+document.getElementById("name").innerText = user.name || "No Name";
+document.getElementById("email").innerText = user.email || "No Email";
+document.getElementById("photo").src = user.photo || "https://via.placeholder.com/100";
+
+// Logout function
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
