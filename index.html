@@ -1,153 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Gallery</title>
-
+  <title>Signup</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
+      font-family: Arial;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    header {
-      background: #222;
-      color: white;
-      text-align: center;
+    .box {
+      background: white;
       padding: 20px;
-      font-size: 28px;
-      letter-spacing: 2px;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      padding: 20px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: auto; /* REAL SIZE */
+      width: 300px;
       border-radius: 10px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .gallery img:hover {
-      transform: scale(1.03);
-    }
-
-    /* FULL SCREEN VIEW */
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      padding-top: 60px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.9);
-    }
-
-    .lightbox img {
-      margin: auto;
-      display: block;
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 10px;
-    }
-
-    /* CLOSE BUTTON */
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      color: white;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: #ccc;
-    }
-
-    footer {
       text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      width: 100%;
       padding: 10px;
-      background: #222;
+      margin-top: 10px;
+      background: black;
       color: white;
+      border: none;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  📸 GALLERY
-</header>
+<div class="box">
+  <h2>Create Account</h2>
+  <p>Click below to sign up</p>
 
-<div class="gallery" id="gallery"></div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox">
-  <span class="close">&times;</span>
-  <img id="lightbox-img">
+  <button onclick="openForm()">Sign up</button>
 </div>
 
-<footer>
-  © 2026 Gallery Website
-</footer>
-
 <script>
-  const username = "yafeti";
-  const repo = "Gallery";
-  const folder = "Photos";
 
-  const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
+// ✅ Your Google Form link
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdmoMHTqkjzBahQ4IaaCiouRHVajES9UzCYsrGc-OMRPeNOBg/viewform?usp=header";
 
-  const gallery = document.getElementById("gallery");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const closeBtn = document.querySelector(".close");
+function openForm() {
+  window.location.href = FORM_URL;
+}
 
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      data.forEach(file => {
-        if (file.type === "file") {
-          const img = document.createElement("img");
-          img.src = file.download_url;
-          img.alt = file.name;
-
-          // CLICK → OPEN FULL SCREEN
-          img.onclick = () => {
-            lightbox.style.display = "block";
-            lightboxImg.src = file.download_url;
-          };
-
-          gallery.appendChild(img);
-        }
-      });
-    })
-    .catch(error => {
-      console.error("Error loading images:", error);
-    });
-
-  // CLOSE BUTTON
-  closeBtn.onclick = () => {
-    lightbox.style.display = "none";
-  };
-
-  // CLICK OUTSIDE IMAGE TO CLOSE
-  lightbox.onclick = (e) => {
-    if (e.target === lightbox) {
-      lightbox.style.display = "none";
-    }
-  };
 </script>
 
 </body>
