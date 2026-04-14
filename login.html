@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: black;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Login</h2>
+
+  <input type="email" id="email" placeholder="Enter email">
+  <button onclick="login()">Login</button>
+
+  <p id="msg"></p>
+</div>
+
+<script>
+
+// ✅ Your Google Apps Script API
+const API_URL = "https://script.google.com/macros/s/AKfycbw4wf3BZe7SyRUR6tNAwWijfvo9mCFeXeuL0OgFYFAKxwTZbxnjM1h2p8QN14s_7ZZM2g/exec";
+
+async function login() {
+  const email = document.getElementById("email").value;
+  const msg = document.getElementById("msg");
+
+  msg.innerText = "Checking...";
+
+  try {
+    const res = await fetch(API_URL);
+    const users = await res.json();
+
+    const user = users.find(u => u.email === email);
+
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+      msg.innerText = "Login successful!";
+
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1000);
+
+    } else {
+      msg.innerText = "Email not found. Please sign up.";
+    }
+
+  } catch (err) {
+    msg.innerText = "Error connecting to server.";
+    console.error(err);
+  }
+}
+
+</script>
+
+</body>
+</html>
